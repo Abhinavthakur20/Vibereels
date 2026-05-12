@@ -1,0 +1,87 @@
+{
+  "name": "vibereels",
+  "displayName": "VibeReels",
+  "description": "Watch your Instagram Reels feed directly inside VS Code",
+  "version": "1.0.0",
+  "publisher": "vibereels",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:vibereels.reelView"
+  ],
+  "main": "./dist/extension.js",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/vibereels"
+  },
+  "keywords": [
+    "instagram",
+    "reels",
+    "video",
+    "social",
+    "entertainment"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vibereels-sidebar",
+          "title": "VibeReels",
+          "icon": "media/vibereels.svg"
+        }
+      ]
+    },
+    "views": {
+      "vibereels-sidebar": [
+        {
+          "type": "webview",
+          "id": "vibereels.reelView",
+          "name": "VibeReels"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "vibereels.login",
+        "title": "VibeReels: Login to Instagram"
+      },
+      {
+        "command": "vibereels.logout",
+        "title": "VibeReels: Logout from Instagram"
+      },
+      {
+        "command": "vibereels.refresh",
+        "title": "VibeReels: Refresh Reels Feed"
+      },
+      {
+        "command": "vibereels.show",
+        "title": "VibeReels: Show Sidebar"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "npm run build:webview && npm run build:ext",
+    "build:ext": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --external:playwright --format=cjs --platform=node --sourcemap",
+    "build:webview": "cd webview && npm run build",
+    "watch:ext": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --external:playwright --format=cjs --platform=node --sourcemap --watch",
+    "dev": "concurrently \"npm run watch:ext\" \"cd webview && npm run dev\"",
+    "install:all": "npm install && cd webview && npm install",
+    "postinstall": "npx playwright install chromium"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "concurrently": "^8.2.2",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "playwright": "^1.41.0"
+  }
+}
